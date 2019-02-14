@@ -172,6 +172,120 @@ function getLaporanPerbulan() {
   }
 
 
+
+
+  function getDetailMT() {
+    $.ajaxSetup({
+  
+        headers: {
+  
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  
+        }
+  
+    });           
+    
+    $.ajax({
+        type:'GET',
+        url:route('getDetailMT'),
+        data:{
+
+        },
+        success:function(data){
+            $("#cCahaya").html(data['cCahaya']+' lux');
+            $("#cSuhu").html(data['cSuhu']+'° C');
+            $("#cPh").html(data['cPh']);
+            $("#cKt").html(data['cKt']+'%');
+            var ctCahaya = document.getElementById('cahayaChart').getContext('2d');
+            var cahayaChart = new Chart(ctCahaya, {
+               // The type of chart we want to create
+               type: 'line',
+         
+               // The data for our dataset
+               data: {
+                   labels: ["Jam Ke-0","Jam Ke-6","Jam Ke-12","Jam Ke-18","Jam Ke-24"],
+                   datasets: [{
+                       label: "Intensitas Cahaya",
+                       borderColor: 'rgb(255, 99, 132)',
+                       data: data['cahaya'],
+                       fill: false
+                   },
+                                 
+                 ]
+               },
+         
+               // Configuration options go here
+               options: {}
+           });
+           var ctSuhu = document.getElementById('suhuChart').getContext('2d');
+           var suhuChart = new Chart(ctSuhu, {
+               // The type of chart we want to create
+               type: 'line',
+         
+               // The data for our dataset
+               data: {
+                   labels: ["Jam Ke-0","Jam Ke-6","Jam Ke-12","Jam Ke-18","Jam Ke-24"],
+                   datasets: [
+                   {
+                       label: "Suhu",
+                       borderColor: '#36A2EB',
+                       data: data['suhu'],
+                       fill: false
+                   },
+                                 
+                 ]
+               },
+         
+               // Configuration options go here
+               options: {}
+           });
+           var ctPh = document.getElementById('phChart').getContext('2d');
+           var phChart = new Chart(ctPh, {
+               // The type of chart we want to create
+               type: 'line',
+         
+               // The data for our dataset
+               data: {
+                   labels: ["Jam Ke-0","Jam Ke-6","Jam Ke-12","Jam Ke-18","Jam Ke-24"],
+                   datasets: [
+                   {
+                       label: "pH",
+                       borderColor: '#FFCD56',
+                       data: data['ph'],
+                       fill: false
+                   }, 
+                                  
+                 ]
+               },
+         
+               // Configuration options go here
+               options: {}
+           });
+           var ctKt = document.getElementById('ktChart').getContext('2d');
+           var ktChart = new Chart(ctKt, {
+               // The type of chart we want to create
+               type: 'line',
+         
+               // The data for our dataset
+               data: {
+                   labels: ["Jam Ke-0","Jam Ke-6","Jam Ke-12","Jam Ke-18","Jam Ke-24"],
+                   datasets: [ 
+                   {
+                       label: "Kelembaban Tanah",
+                       borderColor: '#4BC0C0',
+                       data: data['kt'],
+                       fill: false
+                   },                                   
+                 ]
+               },
+         
+               // Configuration options go here
+               options: {}
+           });                                    
+        }
+     });
+  }
+
 function updateState(dev,kondisi){
   $.ajaxSetup({
 
@@ -273,15 +387,29 @@ function getState(dev,kondisi){
       });
   }
 
+  function autoRefresh() {
+    $.get(route('getDetailMT'), function(data) {
+        console.log('refresh');
+        $("#cCahaya").html(data['cCahaya']+' lux');
+        $("#cSuhu").html(data['cSuhu']+'° C');
+        $("#cPh").html(data['cPh']);
+        $("#cKt").html(data['cKt']+'%');
+        window.setTimeout(autoRefresh, 1000);
+    });
+  }
+
+
 var pathname = window.location.href;
 var admin_dashboard = route('admin_dashboard')['template'];
 var home = route('home')['template'];
 
 if((pathname == home)||(pathname == admin_dashboard)){
     getState();
-    setTimeout(function(){
-        window.location.reload(1);
-        }, 5000);        
+    getDetailMT();
+    autoRefresh();
+    // setTimeout(function(){
+    //     window.location.reload(1);
+    //     }, 5000);        
 }
 
 function routeCheck(routeName){
@@ -296,6 +424,24 @@ function routeCheck(routeName){
 if(routeCheck(route('index_laporan'))){
     $('option:first').trigger('change');
 }
+
+
+
+function printLaporan(){
+    var tanggal = $("#tanggal").val()
+    var date = new Date(tanggal);
+    console.log(date);
+    // console.log(date.getMonth()+1);
+    // console.log(date.getFullYear());
+    var month = date.getMonth()+1;
+    var year = date.getFullYear();
+    // console.log(month);
+    // console.log(year);
+    console.log(route('printAnalisis',[1,2])['template']);
+    window.location.href = '/printAnalisis/'+year+'/'+month;
+}
+
+
 
 
     

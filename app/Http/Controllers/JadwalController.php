@@ -20,8 +20,8 @@ class JadwalController extends Controller
     
     public function index_jadwal(){
         $data = DB::table('jadwal as j')
-        ->join('kelompok as k','k.id','j.kelompok')
-        ->join('tanaman as t','t.id','j.tanaman')
+        ->leftJoin('kelompok as k','k.id','j.kelompok')
+        ->leftJoin('tanaman as t','t.id','j.tanaman')
         ->get(['j.id','j.nama','t.nama as tanaman','k.nama as kelompok','j.tgl_masuk','j.tgl_keluar','j.jumlah_tanaman','j.status']);
 
         return view('admin-page.jadwal.index',compact('data'));
@@ -30,7 +30,10 @@ class JadwalController extends Controller
 
     public function create_jadwal(){
         
-        return view('admin-page.jadwal.create');
+        $tanaman = DB::table('tanaman')->get();
+        $kelompok = DB::table('kelompok')->get();
+        
+        return view('admin-page.jadwal.create',compact('tanaman','kelompok'));
     }    
 
     public function store_jadwal(Request $request){
@@ -48,7 +51,9 @@ class JadwalController extends Controller
     
     public function edit_jadwal(Request $request,$id){
         $data = Jadwal::find($id);
-        return view('admin-page.jadwal.edit',compact('data'));
+        $tanaman = DB::table('tanaman')->get();
+        $kelompok = DB::table('kelompok')->get();        
+        return view('admin-page.jadwal.edit',compact('data','tanaman','kelompok'));
     }
     
     public function update_jadwal(Request $request,$id){
@@ -61,7 +66,7 @@ class JadwalController extends Controller
         $data->jumlah_tanaman = $request->jumlah_tanaman;
         $data->status = $request->status;
         $data->save();
-        return redirect()->route('edit_jadwal',$id);
+        return redirect()->route('index_jadwal');
     }
 
     public function destroy_jadwal($id){

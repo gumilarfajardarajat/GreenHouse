@@ -37,22 +37,12 @@ class HomeController extends Controller
         $cahaya = $md[0]->cahaya;
         $suhu = $md[0]->suhu;
         $ph = $md[0]->ph; 
-        $kt = $md[0]->kt;     
+        $kt = $md[0]->kt;
         
-        // $proses = DB::table('users as u')
-        // ->join('kelompok as k','k.id','u.kelompok')
-        // ->join('jadwal as j','j.kelompok','k.id')
-        // ->join('tanaman as t','t.jadwal','j.id')
-        // ->get(['t.id','t.nama','t.status']);        
-
-        // $proses = count($proses);
-
-        // $url = $request->url();
-        // dd(Input::get('cahaya'));
-
-        $kelompok = Kelompok::find(Auth::user()->kelompok);
-
-        return view('home',compact('cahaya','tanaman','suhu','ph','kt'));
+        $collection = DB::table('mediatanam')
+        ->where('tanggal',date("Y-m-d"))
+        ->get();
+        return view('admin-page.dashboard',compact('cahaya','suhu','ph','kt','collection'));
     }
   
 

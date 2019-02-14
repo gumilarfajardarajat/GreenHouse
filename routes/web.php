@@ -81,10 +81,12 @@ Route::group(['middleware' => ['web','auth']],function(){
     Route::get('/kt','DeviceController@indexCahaya')->name('index_kt');
 
     Route::get('/getmsg','AdminController@getTanamanByJadwal');
+    Route::get('/getDetailMT','DeviceController@getDetailMT')->name('getDetailMT');
     Route::get('/getstate','DeviceController@getState');
     Route::put('/state/{field}/{value}','DeviceController@update_state');
     Route::get('/laporan','DeviceController@index_laporan')->name('index_laporan');
     Route::get('/getLaporanPerBulan/{y}/{m}','DeviceController@getLaporanPerBulan')->name('getLaporanPerBulan');
+    Route::get('/printAnalisis/{year}/{month}','DeviceController@printAnalisis')->name('printAnalisis');
 
 });
 

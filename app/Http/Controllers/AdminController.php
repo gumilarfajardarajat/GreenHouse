@@ -16,6 +16,8 @@ class AdminController extends Controller
         
     }    
     
+
+
     public function dashboard(){
         $md = DB::table('mediatanam')
         ->orderBy('id', 'desc')
@@ -26,9 +28,12 @@ class AdminController extends Controller
         $cahaya = $md[0]->cahaya;
         $suhu = $md[0]->suhu;
         $ph = $md[0]->ph; 
-        $kt = $md[0]->kt;         
-
-        return view('admin-page.dashboard',compact('cahaya','suhu','ph','kt','proses','panen'));
+        $kt = $md[0]->kt;
+        
+        $collection = DB::table('mediatanam')
+        ->where('tanggal',date("Y-m-d"))
+        ->get();
+        return view('admin-page.dashboard',compact('cahaya','suhu','ph','kt','collection'));
     }
 
     public function update_state($field,$value){

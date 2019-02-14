@@ -35,34 +35,34 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-md-12 mt-3">
-                                <select class="form-control" id="sel1">
-                                    <option disabled selected>Pilih Tanaman</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                <label for="email">Tanaman :</label>
+                                <select class="form-control" id="sel1" name="tanaman">
+                                    @foreach ($tanaman as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                    @endforeach
                                 </select> 
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-md-12 mt-3">
-                                <select class="form-control" id="sel1">
-                                    <option disabled selected>Pilih Kelompok</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                <label for="email">Kelompok :</label>
+                                <select class="form-control" id="sel1" name="kelompok">
+                                    @foreach ($kelompok as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                    @endforeach
                                 </select> 
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-md-12 mt">
                                 <label for="email">Tanggal Masuk :</label>
-                                <input type="date" class="form-control" id="email" placeholder="Enter email" name="email">
+                                <input type="date" class="form-control" id="email" placeholder="Enter email" name="tgl_masuk">
                             </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-md-12 mt">
                                 <label for="email">Tanggal Keluar :</label>
-                                <input type="date" class="form-control" id="email" placeholder="Enter email" name="email">
+                                <input type="date" class="form-control" id="email" placeholder="Enter email" name="tgl_keluar">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -71,16 +71,27 @@
                             </div>
                             <div class="col-md-12 mt">
                                 <label class="radio">
-                                    <input type="radio" name="optradio" checked>Option 1
+                                    <input type="radio" name="status" value="planning" checked> Planning
                                 </label>
-                                <label class="radio">
-                                    <input type="radio" name="optradio">Option 2
+                                <label class="radio ml-3">
+                                    <input type="radio" name="status" value="progres"> Progress
                                 </label>
-                                <label class="radio">
-                                    <input type="radio" name="optradio">Option 3
+                                <label class="radio ml-3">
+                                    <input type="radio" name="status" value="done"> Done
                                 </label>
                             </div>                            
-                        </div>                                                                                                                                                                                  
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <input type="number" class="form-control" name="jumlah_tanaman" required autofocus placeholder="Jumlah Tanaman" min="0">
+
+                                @if ($errors->has('nama'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('nama') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>                                                                                                                                                                                                          
                         <div class="form-group row mb-0">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary col-md-12 font-weight-bold mt-3">

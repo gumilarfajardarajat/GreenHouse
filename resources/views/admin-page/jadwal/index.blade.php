@@ -14,6 +14,7 @@
       <th>Kelompok</th>
       <th>Tanaman</th>
       <th>Jumlah Tanaman</th>
+      <th>Status</th>
       <th>Aksi</th>
     </tr>
   </thead>
@@ -27,8 +28,9 @@
         <td>{{$d->kelompok}}</td>
         <td>{{$d->tanaman}}</td>
         <td>{{$d->jumlah_tanaman}}</td>
+        <td>{{$d->status}}</td>
         <td>
-          <a href="" class="btn btn-primary font-weight-bold disabled"><i class="fas fa-list-ul"></i> Sunting</i></a>
+          <a href="{{route('edit_jadwal',$d->id)}}" class="btn btn-primary font-weight-bold"><i class="fas fa-list-ul"></i> Sunting</i></a>
         </td>
       </tr>                  
     @endforeach      
